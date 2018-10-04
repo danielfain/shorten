@@ -1,5 +1,10 @@
-.field {
-    width: 40%;
+form {
+    width: 50%;
     margin: 0 auto;
-    padding-top: 3em;
+    margin-top: 3em;
+}
+
+.shorten-button {
+    text-align: center;
+    margin-top: 1em;
 }
