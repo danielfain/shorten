@@ -20,22 +20,26 @@
           </div>
         </div>
     </section>
-    <form>
-      <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">URL</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-                <input class="input is-large" type="text" placeholder="Enter your URL here...">
-              </p>
-              <div class="shorten-button">
-                <button class="button is-primary">shorten!</button>
+    <main id="app">
+      <form @submit.prevent="createUrl()">
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">URL</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input v-model="url" class="input is-large" type="text" placeholder="Enter your URL here..." required>
+                </p>
+                <div class="shorten-button">
+                  <button type="submit" class="button is-primary">shorten!</button>
+                </div>
               </div>
             </div>
-          </div>
-      </div>
-    </form>
+        </div>
+      </form>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
