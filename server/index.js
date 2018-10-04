@@ -5,9 +5,10 @@ const app = express();
 
 const port = process.env.port || 4200;
 
-app.get('/', (req, res) => {
-    res.send('it works');
-});
+app.use(morgan('tiny'));
+app.use(bodyParser.json());
+app.use(express.static('./public'));
+
 
 app.listen(port, (req, res) => {
     console.log('Listening on port', port);

@@ -4,7 +4,8 @@
   "description": "shorten urls",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,8 @@
   "homepage": "https://github.com/danielfain/shorten#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "bulma": "^0.7.1",
     "express": "^4.16.3",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.4"
   }
 }
