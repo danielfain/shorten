@@ -9,7 +9,7 @@ const schema = Joi.object().keys({
             /https?/
         ]
     }).required(),
-    id: Joi.string().alphanum().min(5).max(5).required()
+    id: Joi.string().alphanum().min(7).max(7).required()
 }).with('url', 'id');
 
 async function create(urlObject) {
