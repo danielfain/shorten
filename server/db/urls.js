@@ -24,10 +24,7 @@ async function create(urlObject) {
             return urls.insert(urlObject)
         } else {
             return Promise.reject({
-                isJoi: true,
-                details: [{
-                    message: 'ID is in use.'
-                }]
+                name: 'InUseError'
             });
         }
     } else {
@@ -36,6 +33,13 @@ async function create(urlObject) {
 
 }
 
+function find(id) {
+    return urls.findOne({
+        id: id
+    })
+}
+
 module.exports = {
-    create
+    create,
+    find
 };

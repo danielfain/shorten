@@ -28,7 +28,7 @@ new Vue({
                 return response.json();
             }).then(result => {
                 console.log(result)
-                if (result.name === 'ValidationError') {
+                if (result.name === 'ValidationError' || result.name === 'InUseError') {
                     this.error = true;
                 } else {
                     this.success = true;

@@ -21,6 +21,16 @@ app.post('/api/urls', async (req, res) => {
     }
 });
 
+app.get('/:id', async (req, res) => {
+    const url = await urls.find(req.params.id);
+
+    if (url) {
+        res.redirect(url.url);
+    } else {
+        res.redirect('/404.html');
+    }
+});
+
 app.listen(port, (req, res) => {
     console.log('Listening on port', port);
 });
