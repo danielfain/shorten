@@ -8,3 +8,14 @@ form {
     text-align: center;
     margin-top: 1em;
 }
+
+.if-success {
+    text-align: center;
+    margin-top: 3em;
+}
+
+.notification {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 3em;
+}

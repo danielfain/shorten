@@ -2,11 +2,15 @@ new Vue({
     el: '#app',
     data: {
         url: '',
-        id: generateId()
+        id: '',
+        success: false,
+        error: false
     },
     methods: {
         createUrl() {
             console.log(this.url);
+
+            this.id = generateId();
             
             const body = {
                 url: this.url,
@@ -23,7 +27,12 @@ new Vue({
                 console.log(response);
                 return response.json();
             }).then(result => {
-                console.log(result);
+                console.log(result)
+                if (result.name === 'ValidationError') {
+                    this.error = true;
+                } else {
+                    this.success = true;
+                }
             });
         },
         }

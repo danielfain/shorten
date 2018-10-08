@@ -21,7 +21,10 @@
         </div>
     </section>
     <main id="app">
-      <form @submit.prevent="createUrl()">
+      <form v-if="!success" @submit.prevent="createUrl()">
+        <div v-if="error" class="notification is-danger">
+            Incompatible URL, please try again. Make sure to include http(s) in your URL.
+        </div>
         <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">URL</label>
@@ -38,6 +41,7 @@
             </div>
         </div>
       </form>
+      <h1 v-if="success" class="title is-1 if-success"><a :href="'/' + id">https://danielfain.net/{{id}}</a></h1>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
     <script src="main.js"></script>
