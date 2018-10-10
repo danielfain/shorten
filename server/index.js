@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const app = express();
 const urls = require('./db/urls');
 
-const port = process.env.port || 4200;
+const port = process.env.port || 8081;
 
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
