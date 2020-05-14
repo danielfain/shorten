@@ -1,3 +1,3 @@
 # shortener
 
-URL shortener built with Vue.js, Node, Express, and MongoDB
+URL shortener built with AWS Lambda functions written in Go!
