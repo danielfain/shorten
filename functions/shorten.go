@@ -28,18 +28,20 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	db, err := sql.Open("mysql", os.Getenv("db_string"))
 
 	if err != nil {
-		println(err.Error())
+		println("MYSQL CONN: " + err.Error())
 	}
 
 	defer db.Close()
 
-	body := RequestBody{}
+	var body RequestBody
 
 	err = json.Unmarshal([]byte(request.Body), &body)
 
 	if err != nil {
-		println(err.Error())
+		println("BODY UNMARSHAL: " + err.Error())
 	}
+
+	println(body.URL)
 
 	shortURL := os.Getenv("host") + randomLetters(numLetters)
 
