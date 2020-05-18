@@ -6,6 +6,10 @@ import (
 	"net/http"
 	"os"
 
+	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
@@ -21,12 +25,20 @@ var numLetters = 6
 
 // Handler for the lambda function
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	body := RequestBody{}
-
-	err := json.Unmarshal([]byte(request.Body), &body)
+	db, err := sql.Open("mysql", os.Getenv("db_string"))
 
 	if err != nil {
-		println(err)
+		println(err.Error())
+	}
+
+	defer db.Close()
+
+	body := RequestBody{}
+
+	err = json.Unmarshal([]byte(request.Body), &body)
+
+	if err != nil {
+		println(err.Error())
 	}
 
 	shortURL := os.Getenv("host") + randomLetters(numLetters)
@@ -36,7 +48,6 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		Headers:    map[string]string{"Access-Control-Allow-Origin": "*"},
 		Body:       shortURL,
 	}, nil
-
 }
 
 func randomLetters(n int) string {
