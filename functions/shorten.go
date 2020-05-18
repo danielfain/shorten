@@ -14,8 +14,8 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-// RequestBody represents the url to be shortened from the request
-type RequestBody struct {
+// Body represents the url to be shortened from the request
+type Body struct {
 	URL string `json:"url"`
 }
 
@@ -33,7 +33,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	defer db.Close()
 
-	var body RequestBody
+	var body Body
 
 	err = json.Unmarshal([]byte(request.Body), &body)
 
@@ -41,14 +41,19 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		println("BODY UNMARSHAL: " + err.Error())
 	}
 
-	println(body.URL)
-
 	shortURL := os.Getenv("host") + randomLetters(numLetters)
+
+	var response = Body{URL: shortURL}
+	r, err := json.Marshal(response)
+
+	if err != nil {
+		println("BODY MARSHAL: " + err.Error())
+	}
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Headers:    map[string]string{"Access-Control-Allow-Origin": "*"},
-		Body:       shortURL,
+		Body:       string(r),
 	}, nil
 }
 
