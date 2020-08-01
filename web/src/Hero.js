@@ -1,10 +1,10 @@
 import React from 'react';
 
 const Hero = () => (
-    <section class="hero is-medium is-primary is-bold">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">shortener</h1>
+    <section className="hero is-medium is-primary is-bold">
+      <div className="hero-body">
+        <div className="container">
+          <h1 className="title">shortener</h1>
         </div>
       </div>
     </section>
