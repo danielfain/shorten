@@ -4,7 +4,8 @@ class URLForm extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-          url: '' 
+          url: '',
+          invalidUrl: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -22,36 +23,52 @@ class URLForm extends Component {
       let url = this.state.url;
 
       if (url.match(regex)) {
-        console.log('A URL was submitted: ' + url);
+        this.setState({ invalidUrl: false })
+
+        fetch(process.env.SHORTEN_API_URL)
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+          })
+          .catch(err => console.log(err));
       } else {
-        console.log('Bad URL format');
+        this.setState({ invalidUrl: true })
       }
+
+      this.setState({ url: '' });
       
       event.preventDefault();
     }
 
     render() {
         return (
-          <div style={{ display: 'flex', paddingTop: '4vh', justifyContent: 'center' }}>
-            <form style={{ width: '50vw' }} onSubmit={this.handleSubmit} > 
-              <div style={{ alignItems: 'center' }} className="field is-horizontal">
-                <label style={{ paddingRight: '1vw' }} className="label">URL</label>
+          <>
+            <div style={{ display: 'flex', paddingTop: '4vh', paddingBottom: '2vh', justifyContent: 'center' }}>
+              <form style={{ width: '50%' }} onSubmit={this.handleSubmit} > 
+                <div style={{ alignItems: 'center' }} className="field is-horizontal">
+                  <label style={{ paddingRight: '1vw' }} className="label">URL</label>
 
-                <input 
-                  style={{ maxWidth: '100%' }} 
-                  className="input is-large" 
-                  type="text" 
-                  placeholder="Enter your URL here..." 
-                  value={this.state.url}
-                  onChange={this.handleChange} 
-                />
+                  <input 
+                    style={{ maxWidth: '100%' }} 
+                    className="input is-large" 
+                    type="text" 
+                    placeholder="Enter your URL here..." 
+                    value={this.state.url}
+                    onChange={this.handleChange} 
+                  />
 
-                <div style={{ paddingLeft: '1vw' }} className="shorten-button">
-                  <button type="submit" className="button is-primary">Go!</button>
+                  <div style={{ paddingLeft: '1vw' }} className="shorten-button">
+                    <button type="submit" className="button is-primary">Go!</button>
+                  </div>
                 </div>
-              </div>
-            </form>
-          </div>
+              </form>
+            </div>
+            { this.state.invalidUrl && 
+            <div style={{ width: '25%', margin: 'auto' }} className="notification is-danger">
+              Please enter a valid URL.
+            </div>
+            }
+          </>
         );
       }
 }
