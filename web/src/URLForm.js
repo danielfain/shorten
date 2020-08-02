@@ -17,6 +17,7 @@ class URLForm extends Component {
     }
 
     handleSubmit(event) {
+      // eslint-disable-next-line
       let expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
       let regex = new RegExp(expression);
 
