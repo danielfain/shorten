@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bulmaswatch": "^0.8.1",
+    "dotenv": "^8.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
