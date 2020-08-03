@@ -1,0 +1,65 @@
+$breakpoint-mobile: 768px;
+
+.formContainer {
+    display: flex;
+    padding-top: 4vh; 
+    padding-bottom: 2vh; 
+    justify-content: center;
+
+    form {
+        width: 50%;
+
+        .field {
+            align-items: center;
+
+            label {
+                padding-right: 1vw;
+            }
+        
+            input {
+                padding-left: 1vw;
+                padding-right: 1vw;
+                max-width: 100%;
+            }
+        
+            .buttonContainer {
+                padding-left: 1vw;
+            }
+        }
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .formContainer {
+        padding-top: 4vh; 
+        padding-bottom: 2vh;
+    
+        form {
+            width: max-content;
+            .field {
+                label {
+                    padding-right: 1vw;
+                    display: inline-block;
+                }
+            
+                input {
+                    padding-left: 1vw;
+                    padding-right: 1vw;
+                    width: 100%;
+                    display: inline-block;
+                }
+            
+                .buttonContainer {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 2vh;
+                }
+            }
+        }
+    }
+}
+
+.notification {
+    width: fit-content;
+    margin: auto;
+}

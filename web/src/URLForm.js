@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './URLForm.scss';
+
 class URLForm extends Component {
     constructor(props) {
         super(props);
@@ -44,13 +46,12 @@ class URLForm extends Component {
     render() {
         return (
           <>
-            <div style={{ display: 'flex', paddingTop: '4vh', paddingBottom: '2vh', justifyContent: 'center' }}>
-              <form style={{ width: '50%' }} onSubmit={this.handleSubmit} > 
-                <div style={{ alignItems: 'center' }} className="field is-horizontal">
-                  <label style={{ paddingRight: '1vw' }} className="label">URL</label>
+            <div className='formContainer'>
+              <form onSubmit={this.handleSubmit} > 
+                <div className="field is-horizontal">
+                  <label className="label">URL</label>
 
                   <input 
-                    style={{ maxWidth: '100%' }} 
                     className="input is-large" 
                     type="text" 
                     placeholder="Enter your URL here..." 
@@ -58,14 +59,14 @@ class URLForm extends Component {
                     onChange={this.handleChange} 
                   />
 
-                  <div style={{ paddingLeft: '1vw' }} className="shorten-button">
+                  <div className="buttonContainer">
                     <button type="submit" className="button is-primary">Go!</button>
                   </div>
                 </div>
               </form>
             </div>
             { this.state.invalidUrl && 
-            <div style={{ width: '25%', margin: 'auto' }} className="notification is-danger">
+            <div className="notification is-danger">
               Please enter a valid URL.
             </div>
             }
