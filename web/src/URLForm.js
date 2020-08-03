@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 
 import './URLForm.scss';
 
+const SHORTEN_API_URL = 'https://xsw0ry227d.execute-api.us-east-1.amazonaws.com/default/shortenURL';
+
 class URLForm extends Component {
     constructor(props) {
         super(props);
         this.state = { 
           url: '',
-          invalidUrl: false
+          invalidUrl: false,
+          success: false,
+          shortUrl: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -28,14 +32,15 @@ class URLForm extends Component {
       if (url.match(regex)) {
         this.setState({ invalidUrl: false })
 
-        fetch(process.env.SHORTEN_API_URL)
+        fetch(SHORTEN_API_URL)
           .then(res => res.json())
           .then(data => {
-            console.log(data);
+            const { url } = data;
+            this.setState({ success: true, shortUrl: url });
           })
           .catch(err => console.log(err));
       } else {
-        this.setState({ invalidUrl: true })
+        this.setState({ invalidUrl: true, success: false })
       }
 
       this.setState({ url: '' });
@@ -68,6 +73,11 @@ class URLForm extends Component {
             { this.state.invalidUrl && 
             <div className="notification is-danger">
               Please enter a valid URL.
+            </div>
+            }
+            { this.state.success &&
+            <div className="notification is-success">
+              <a href={this.state.shortUrl}>{this.state.shortUrl}</a>
             </div>
             }
           </>
