@@ -2,16 +2,18 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
 
-	"database/sql"
-
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/aws/aws-sdk-go/aws"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go/aws/awserr"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
 
 // Body represents the url to be shortened from the request
@@ -25,17 +27,9 @@ var numLetters = 6
 
 // Handler for the lambda function
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	db, err := sql.Open("mysql", os.Getenv("db_string"))
-
-	if err != nil {
-		println("MYSQL CONN: " + err.Error())
-	}
-
-	defer db.Close()
-
 	var body Body
 
-	err = json.Unmarshal([]byte(request.Body), &body)
+	err := json.Unmarshal([]byte(request.Body), &body)
 
 	if err != nil {
 		println("BODY UNMARSHAL: " + err.Error())
@@ -43,8 +37,51 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	shortURL := os.Getenv("host") + randomLetters(numLetters)
 
+	svc := dynamodb.New(session.New())
+
+	input := &dynamodb.PutItemInput{
+		Item: map[string]*dynamodb.AttributeValue{
+			"short_url": {
+				S: aws.String(shortURL),
+			},
+			"url": {
+				S: aws.String(body.URL),
+			},
+		},
+		TableName: aws.String(os.Getenv("table_name")),
+	}
+
+	_, err = svc.PutItem(input)
+
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case dynamodb.ErrCodeConditionalCheckFailedException:
+				fmt.Println(dynamodb.ErrCodeConditionalCheckFailedException, aerr.Error())
+			case dynamodb.ErrCodeProvisionedThroughputExceededException:
+				fmt.Println(dynamodb.ErrCodeProvisionedThroughputExceededException, aerr.Error())
+			case dynamodb.ErrCodeResourceNotFoundException:
+				fmt.Println(dynamodb.ErrCodeResourceNotFoundException, aerr.Error())
+			case dynamodb.ErrCodeItemCollectionSizeLimitExceededException:
+				fmt.Println(dynamodb.ErrCodeItemCollectionSizeLimitExceededException, aerr.Error())
+			case dynamodb.ErrCodeTransactionConflictException:
+				fmt.Println(dynamodb.ErrCodeTransactionConflictException, aerr.Error())
+			case dynamodb.ErrCodeRequestLimitExceeded:
+				fmt.Println(dynamodb.ErrCodeRequestLimitExceeded, aerr.Error())
+			case dynamodb.ErrCodeInternalServerError:
+				fmt.Println(dynamodb.ErrCodeInternalServerError, aerr.Error())
+			default:
+				fmt.Println(aerr.Error())
+			}
+		} else {
+			// Print the error, cast err to awserr.Error to get the Code and
+			// Message from an error.
+			fmt.Println(err.Error())
+		}
+	}
+
 	var response = Body{URL: shortURL}
-	r, err := json.Marshal(response)
+	j, err := json.Marshal(response)
 
 	if err != nil {
 		println("BODY MARSHAL: " + err.Error())
@@ -53,7 +90,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Headers:    map[string]string{"Access-Control-Allow-Origin": "*"},
-		Body:       string(r),
+		Body:       string(j),
 	}, nil
 }
 
