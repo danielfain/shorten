@@ -32,7 +32,7 @@ class URLForm extends Component {
       if (url.match(regex)) {
         this.setState({ invalidUrl: false })
 
-        fetch(SHORTEN_API_URL)
+        fetch(SHORTEN_API_URL, { method: 'POST', body: JSON.stringify({ url }) })
           .then(res => res.json())
           .then(data => {
             const { url } = data;
