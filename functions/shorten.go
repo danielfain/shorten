@@ -74,7 +74,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
-		Headers:    map[string]string{"Access-Control-Allow-Origin": "*"},
+		Headers:    map[string]string{"Access-Control-Allow-Origin": "*", "Content-Type": "application/json"},
 		Body:       string(j),
 	}, nil
 }
