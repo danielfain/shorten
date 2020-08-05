@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 
@@ -19,8 +20,8 @@ type Body struct {
 	URL string `json:"url"`
 }
 
-// byte represents ASCII characters; use rune for unicode support
-var letters = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 var numLetters = 6
 
 // Handler for the lambda function
@@ -88,5 +89,6 @@ func randomLetters(n int) string {
 }
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	lambda.Start(Handler)
 }
