@@ -1,3 +1,3 @@
 # shortener
 
-URL shortener built with AWS Lambda functions written in Go!
+A URL shortener built with a React frontend and AWS Lambda functions written in Go as the backend.
